@@ -90,9 +90,7 @@ class WordNet {
         String hypernyms = args[1];
 
         WordNet wordnet = new WordNet(synsets, hypernyms);
-        Iterable<String> allNouns = wordnet.nouns();
-        int count = 0;
-        for (String noun : allNouns) count++;
-        StdOut.println(count);
+        StdOut.println(wordnet.distance("worm", "bird"));
+        StdOut.println(wordnet.sap("worm", "bird"));
     }
 }

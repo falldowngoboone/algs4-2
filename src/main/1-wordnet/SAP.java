@@ -36,8 +36,12 @@ public class SAP {
     }
 
     // length of shortest ancestral path between any vertex in v and any vertex in w; -1 if no such path
-    public int length(Iterable<Integer> subsetA, Iterable<Integer> subsetB) {
-        return -1;
+    public int length(Iterable<Integer> vSubset, Iterable<Integer> wSubset) {
+        BreadthFirstDirectedPaths vPaths = new BreadthFirstDirectedPaths(this.G, vSubset);
+        BreadthFirstDirectedPaths wPaths = new BreadthFirstDirectedPaths(this.G, wSubset);
+        int LCA = findLCA(vPaths, wPaths);
+        if (-1 == LCA) return -1;
+        return Math.max(vPaths.distTo(LCA), wPaths.distTo(LCA)) + 1; // add one to account for starting vertex
     }
 
     // a common ancestor of v and w that participates in a shortest ancestral path; -1 if no such path
@@ -48,9 +52,9 @@ public class SAP {
     }
 
     // a common ancestor that participates in shortest ancestral path; -1 if no such path
-    public int ancestor(Iterable<Integer> subsetV, Iterable<Integer> subsetW) {
-        BreadthFirstDirectedPaths vPaths = new BreadthFirstDirectedPaths(this.G, subsetV);
-        BreadthFirstDirectedPaths wPaths = new BreadthFirstDirectedPaths(this.G, subsetW);
+    public int ancestor(Iterable<Integer> vSubset, Iterable<Integer> wSubset) {
+        BreadthFirstDirectedPaths vPaths = new BreadthFirstDirectedPaths(this.G, vSubset);
+        BreadthFirstDirectedPaths wPaths = new BreadthFirstDirectedPaths(this.G, wSubset);
         return findLCA(vPaths, wPaths);
     }
 
