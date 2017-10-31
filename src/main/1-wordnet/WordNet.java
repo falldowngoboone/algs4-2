@@ -10,20 +10,24 @@ import java.util.*;
 
 class WordNet {
     private ST<String, Bag<Integer>> idsByNoun;
+    private ST<Integer, String> synsetsById;
     private Digraph G;
     private SAP shortestPaths;
 
     // constructor takes the name of the two input files
     public WordNet(String synsetsFileName, String hypernymsFileName) {
         if (null == synsetsFileName || null == hypernymsFileName) throw new IllegalArgumentException();
-        idsByNoun = new ST<String, Bag<Integer>>();
+        idsByNoun = new ST<>();
+        synsetsById = new ST<>();
         In synsets = new In(synsetsFileName);
         In hypernyms = new In(hypernymsFileName);
         int V = 0;
         
         while(synsets.hasNextLine()) {
             String[] args = synsets.readLine().split(",");
-            String[] nouns = args[1].split(" ");
+            String synset = args[1];
+            synsetsById.put(V, synset);
+            String[] nouns = synset.split(" ");
             int id = Integer.parseInt(args[0]);
             for (String noun : nouns) {
                 if (!idsByNoun.contains(noun)) idsByNoun.put(noun, new Bag<Integer>());
@@ -58,13 +62,22 @@ class WordNet {
 
     // distance between nounA and nounB (defined below)
     public int distance(String nounA, String nounB) {
-        return 0;
+        Iterable<Integer> nounAIds = getNounIds(nounA);
+        Iterable<Integer> nounBIds = getNounIds(nounB);
+        return shortestPaths.length(nounAIds, nounBIds);
     }
 
     // a synset (second field of synsets.txt) that is the common ancestor of nounA and nounB
     // in a shortest ancestral path (defined below)
     public String sap(String nounA, String nounB) {
-        return null;
+        Iterable<Integer> nounAIds = getNounIds(nounA);
+        Iterable<Integer> nounBIds = getNounIds(nounB);
+        int synsetId = shortestPaths.ancestor(nounAIds, nounBIds);
+        return synsetsById.get(synsetId);
+    }
+
+    private Iterable<Integer> getNounIds(String noun) {
+        return idsByNoun.get(noun);
     }
 
     // do unit testing of this class
@@ -77,8 +90,9 @@ class WordNet {
         String hypernyms = args[1];
 
         WordNet wordnet = new WordNet(synsets, hypernyms);
-        Iterable<String> nouns = wordnet.nouns();
-
-        for (String noun : nouns) {StdOut.println(noun);}
+        Iterable<String> allNouns = wordnet.nouns();
+        int count = 0;
+        for (String noun : allNouns) count++;
+        StdOut.println(count);
     }
 }
