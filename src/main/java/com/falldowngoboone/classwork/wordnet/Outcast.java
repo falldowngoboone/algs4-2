@@ -5,6 +5,8 @@
  *
  ******************************************************************************/
 
+package com.falldowngoboone.classwork.wordnet;
+
 import edu.princeton.cs.algs4.*;
 import java.util.*;
 
@@ -13,7 +15,9 @@ public class Outcast {
     public Outcast(WordNet wordnet) {}
 
     // given an array of WordNet nouns, return an outcast
-    public String outcast(String[] nouns) {}
+    public String outcast(String[] nouns) {
+        return "";
+    }
 
     // see test client below
     public static void main(String[] args) {

@@ -5,6 +5,8 @@
  *
  ******************************************************************************/
 
+package com.falldowngoboone.classwork.wordnet;
+
 import edu.princeton.cs.algs4.*;
 import java.util.*;
 
@@ -90,7 +92,9 @@ class WordNet {
         String hypernyms = args[1];
 
         WordNet wordnet = new WordNet(synsets, hypernyms);
-        StdOut.println(wordnet.distance("worm", "bird"));
-        StdOut.println(wordnet.sap("worm", "bird"));
+        StdOut.println(wordnet.distance("white_marlin", "mileage"));
+        StdOut.println(wordnet.distance("Black_Plague", "black_marlin"));
+        StdOut.println(wordnet.distance("American_water_spaniel", "histology"));
+        StdOut.println(wordnet.distance("Brown_Swiss", "barrel_roll"));
     }
 }

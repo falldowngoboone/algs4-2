@@ -7,16 +7,16 @@
             "taskName": "javac-algs4",
             "type": "shell",
             "command": "javac-algs4 ${file}",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
-        }
+            "group": "build"
+        },
         {
             "taskName": "verify",
             "type": "shell",
             "command": "mvn -B verify",
-            "group": "build"
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         },
         {
             "taskName": "test",
