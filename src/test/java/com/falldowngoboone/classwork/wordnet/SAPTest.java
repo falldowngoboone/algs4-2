@@ -4,6 +4,7 @@ import org.hamcrest.core.Is;
 import org.junit.*;
 import edu.princeton.cs.algs4.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SAPTest {
     private SAP sap;
@@ -11,19 +12,8 @@ public class SAPTest {
 
     @Before
     public void set_up() {
-        G = new Digraph(13);
-        addEdges(G, 
-            makeEdge(7,3), 
-            makeEdge(8,3),
-            makeEdge(3,1),
-            makeEdge(4,1),
-            makeEdge(5,1),
-            makeEdge(9,5),
-            makeEdge(10,5),
-            makeEdge(11,10),
-            makeEdge(12,10),
-            makeEdge(1,0),
-            makeEdge(2,0));
+        In digraph1 = new In(System.getProperty("user.dir") + "/src/test/wordnet/digraph1.txt");
+        G = new Digraph(digraph1);
         sap = new SAP(G);
     }
 
@@ -82,15 +72,5 @@ public class SAPTest {
 
         int ancestor = sap.length(verticesA, verticesB);
         Assert.assertThat("SAP#length with iterable vertices", ancestor, Is.is(2));
-    }
-
-    private int[] makeEdge(int from, int to) {
-        return new int[]{from, to};
-    }
-
-    private void addEdges(Digraph G, int[]...edges) {
-        for(int[] edge : edges) {
-            G.addEdge(edge[0], edge[1]);
-        }
     }
 }
