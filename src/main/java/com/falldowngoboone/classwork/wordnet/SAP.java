@@ -62,6 +62,7 @@ public class SAP {
 
     private int findLCA(BreadthFirstDirectedPaths vPaths, BreadthFirstDirectedPaths wPaths) {
         for (int root : this.roots) {
+            // TODO something wrong with this logic
             if (vPaths.hasPathTo(root) && wPaths.hasPathTo(root)) {
                 for (int vertex : vPaths.pathTo(root)) {
                     if (wPaths.hasPathTo(vertex)) return vertex;
