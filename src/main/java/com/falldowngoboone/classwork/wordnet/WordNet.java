@@ -10,7 +10,7 @@ package com.falldowngoboone.classwork.wordnet;
 import edu.princeton.cs.algs4.*;
 import java.util.*;
 
-class WordNet {
+public class WordNet {
     private ST<String, Bag<Integer>> idsByNoun;
     private ST<Integer, String> synsetsById;
     private Digraph G;
