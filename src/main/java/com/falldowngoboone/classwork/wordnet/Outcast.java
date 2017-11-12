@@ -9,7 +9,6 @@ package com.falldowngoboone.classwork.wordnet;
 
 import edu.princeton.cs.algs4.*;
 import java.util.*;
-import static java.util.stream.Collectors.*;
 
 public class Outcast {
     private final WordNet wordnet;
@@ -21,9 +20,10 @@ public class Outcast {
     // given an array of WordNet nouns, return an outcast
     public String outcast(String[] nouns) {
         int max;
-        List<Integer> distances = Arrays.asList(nouns).stream().map(noun -> {
+        List<Integer> distances = new ArrayList<>();
+        Arrays.asList(nouns).stream().map(noun -> {
             return Arrays.asList(nouns).stream().mapToInt(n -> wordnet.distance(noun, n)).reduce((total, dist) -> total + dist).getAsInt();
-        }).collect(toList());
+        }).forEach(dist -> distances.add(dist));
         max = distances.stream().reduce(0, (prev, curr) -> {
             return prev > curr ? prev : curr;
         });
