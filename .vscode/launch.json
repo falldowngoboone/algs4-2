@@ -9,7 +9,7 @@
             "name": "Debug WordNet (Launch)",
             "request": "launch",
             "mainClass": "com.falldowngoboone.classwork.wordnet.WordNet",
-            "args": "/Users/44524/Desktop/algs4-2/src/test/wordnet/synsets.txt /Users/44524/Desktop/algs4-2/src/test/wordnet/hypernyms.txt"
+            "args": "/Users/ryanboone/Desktop/algs4-2/src/test/wordnet/synsets.txt /Users/ryanboone/Desktop/algs4-2/src/test/wordnet/hypernyms.txt"
         },
         {
             "type": "java",

@@ -1,7 +1,8 @@
 package com.falldowngoboone.classwork.wordnet;
 
-import org.hamcrest.core.Is;
+import static org.hamcrest.core.Is.*;
 import org.junit.*;
+import static org.junit.Assert.*;
 import edu.princeton.cs.algs4.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -9,68 +10,28 @@ import java.util.stream.Collectors;
 public class SAPTest {
     private SAP sap;
     private Digraph G;
+    private String testFileDir = System.getProperty("user.dir") + "/src/test/wordnet";
 
     @Before
     public void set_up() {
-        In digraph1 = new In(System.getProperty("user.dir") + "/src/test/wordnet/digraph1.txt");
-        G = new Digraph(digraph1);
+        In digraph = new In(testFileDir + "/digraph-wordnet.txt");
+        G = new Digraph(digraph);
         sap = new SAP(G);
     }
 
     @Test
-    public void testSapIsNotNull() {
-        Assert.assertNotNull("SAP is not null", sap);
+    public void test_bird_and_worm_ancestor_is_correct() {
+        int animal = 20743;
+        List<Integer> bird = Arrays.asList(24306, 24307, 25293, 33764, 70067);
+        List<Integer> worm = Arrays.asList(81679, 81680, 81681, 81682);
+        assertThat(sap.ancestor(bird, worm), is(animal));
     }
 
     @Test
-    public void testSapAncestorWithSingleVertices() {
-        int ancestor = sap.ancestor(7, 10);
-        Assert.assertThat("SAP#ancestor with single vertices", ancestor, Is.is(1));
-
-        ancestor = sap.ancestor(12, 1);
-        Assert.assertThat("SAP#ancestor with single vertices", ancestor, Is.is(1));
-
-        ancestor = sap.ancestor(12, 11);
-        Assert.assertThat("SAP#ancestor with single vertices", ancestor, Is.is(10));
-
-        ancestor = sap.ancestor(12, 6);
-        Assert.assertThat("SAP#ancestor with single vertices", ancestor, Is.is(-1));
-    }
-
-    @Test
-    public void testSapAncestorWithIterableVertices() {
-        Bag<Integer> verticesA = new Bag<>();
-        verticesA.add(12);
-        verticesA.add(9);
-        verticesA.add(8);
-        Bag<Integer> verticesB = new Bag<>();
-        verticesB.add(11);
-        verticesB.add(7);
-
-        int ancestor = sap.ancestor(verticesA, verticesB);
-        Assert.assertThat("SAP#ancestor with iterable vertices", ancestor, Is.is(3));
-    }
-
-    @Test
-    public void testSapLengthWithSingleVertices() {
-        int length = sap.length(7, 2);
-        Assert.assertThat("SAP#length with single vertices", length, Is.is(4));
-
-        length = sap.length(12, 9);
-        Assert.assertThat("SAP#length with single vertices", length, Is.is(3));
-    }
-
-    @Test
-    public void testSapLengthWithIterableVertices() {
-        Bag<Integer> verticesA = new Bag<>();
-        verticesA.add(12);
-        verticesA.add(9);
-        verticesA.add(8);
-        Bag<Integer> verticesB = new Bag<>();
-        verticesB.add(11);
-        verticesB.add(7);
-
-        int ancestor = sap.length(verticesA, verticesB);
-        Assert.assertThat("SAP#length with iterable vertices", ancestor, Is.is(2));
+    public void test_bird_and_worm_length_is_correct() {
+        int length = 5;
+        List<Integer> bird = Arrays.asList(24306, 24307, 25293, 33764, 70067);
+        List<Integer> worm = Arrays.asList(81679, 81680, 81681, 81682);
+        assertThat(sap.length(bird, worm), is(length));
     }
 }
