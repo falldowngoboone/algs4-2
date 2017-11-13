@@ -12,7 +12,6 @@
 package com.falldowngoboone.classwork.wordnet;
 
 import edu.princeton.cs.algs4.*;
-import java.util.*;
 
 public class SAP {
     private final Digraph G;

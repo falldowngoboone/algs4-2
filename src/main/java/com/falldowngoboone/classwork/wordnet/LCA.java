@@ -17,9 +17,9 @@ public class LCA {
     private boolean[] marked2;  // marked[v] = is there an s2->v path?
     private int[] distTo2;      // distTo[v] = length of shortest s2->v path
     private int lca;            // LCA       = lowest common ancestor between s1 and s2
+    private int dist;
 
     /**
-     * Computes the shortest path from {@code s} and every other vertex in graph {@code G}.
      * @param G the digraph
      * @param s1 the first source vertex
      * @param s2 the second source vertex
@@ -35,14 +35,13 @@ public class LCA {
             distTo2[v] = INFINITY;
         }
         lca = -1;
+        dist = INFINITY;
         validateVertex(s1);
         validateVertex(s2);
         bfs(G, s1, s2);
     }
 
     /**
-     * Computes the shortest path from any one of the source vertices in {@code sources}
-     * to every other vertex in graph {@code G}.
      * @param G the digraph
      * @param sources1 the first source vertices
      * @param sources2 the second source vertices
@@ -59,6 +58,7 @@ public class LCA {
             distTo2[v] = INFINITY;
         }
         lca = -1;
+        dist = INFINITY;
         validateVertices(sources1);
         validateVertices(sources2);
         bfs(G, sources1, sources2);
@@ -74,26 +74,36 @@ public class LCA {
         marked2[s2] = true;
         distTo2[s2] = 0;
         q2.enqueue(s2);
-        while ((!q1.isEmpty() || !q2.isEmpty()) && lca == -1) {
+        while ((!q1.isEmpty() || !q2.isEmpty())) {
             if (!q1.isEmpty()) {
                 int v = q1.dequeue();
+                
+                if (marked2[v] && dist > distTo1[v] + distTo2[v]) {
+                    lca = v;
+                    dist = distTo1[v] + distTo2[v];
+                }
+                
                 for (int w : G.adj(v)) {
                     if (!marked1[w]) {
                         distTo1[w] = distTo1[v] + 1;
                         marked1[w] = true;
                         q1.enqueue(w);
-                        if (marked2[w]) lca = w;
                     }
                 }
             }
             if (!q2.isEmpty()) {
                 int v = q2.dequeue();
+
+                if (marked1[v] && dist > distTo1[v] + distTo2[v]) {
+                    lca = v;
+                    dist = distTo1[v] + distTo2[v];
+                }
+                
                 for (int w : G.adj(v)) {
                     if (!marked2[w]) {
                         distTo2[w] = distTo2[v] + 1;
                         marked2[w] = true;
                         q2.enqueue(w);
-                        if (marked1[w]) lca = w;
                     }
                 }
             }
@@ -114,26 +124,36 @@ public class LCA {
             distTo2[s] = 0;
             q2.enqueue(s);
         }
-        while ((!q1.isEmpty() || !q2.isEmpty()) && lca == -1) {
+        while ((!q1.isEmpty() || !q2.isEmpty())) {
             if (!q1.isEmpty()) {
                 int v = q1.dequeue();
+
+                if (marked2[v] && dist > distTo1[v] + distTo2[v]) {
+                    lca = v;
+                    dist = distTo1[v] + distTo2[v];
+                }
+
                 for (int w : G.adj(v)) {
                     if (!marked1[w]) {
                         distTo1[w] = distTo1[v] + 1;
                         marked1[w] = true;
                         q1.enqueue(w);
-                        if (marked2[w]) lca = w;
                     }
                 }
             }
             if (!q2.isEmpty()) {
                 int v = q2.dequeue();
+
+                if (marked1[v] && dist > distTo1[v] + distTo2[v]) {
+                    lca = v;
+                    dist = distTo1[v] + distTo2[v];
+                }
+
                 for (int w : G.adj(v)) {
                     if (!marked2[w]) {
                         distTo2[w] = distTo2[v] + 1;
                         marked2[w] = true;
                         q2.enqueue(w);
-                        if (marked1[w]) lca = w;
                     }
                 }
             }

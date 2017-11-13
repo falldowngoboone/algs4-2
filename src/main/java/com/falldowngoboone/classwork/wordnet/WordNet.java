@@ -7,14 +7,17 @@
 
 package com.falldowngoboone.classwork.wordnet;
 
+import edu.princeton.cs.algs4.ST;
+import edu.princeton.cs.algs4.Bag;
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.Digraph;
+import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.*;
-import java.util.*;
 
 public class WordNet {
-    private ST<String, Bag<Integer>> idsByNoun;
-    private ST<Integer, String> synsetsById;
-    private Digraph G;
-    private SAP shortestPaths;
+    private final ST<String, Bag<Integer>> idsByNoun;
+    private final ST<Integer, String> synsetsById;
+    private final SAP shortestPaths;
 
     // constructor takes the name of the two input files
     public WordNet(String synsetsFileName, String hypernymsFileName) {
@@ -38,7 +41,7 @@ public class WordNet {
             V++;
         }
 
-        G = new Digraph(V);
+        Digraph G = new Digraph(V);
 
         while(hypernyms.hasNextLine()) {
             String[] args = hypernyms.readLine().split(",");
@@ -48,6 +51,8 @@ public class WordNet {
                 G.addEdge(synsetId, hypernymId);
             }
         }
+
+        validateDAG(G);
 
         shortestPaths = new SAP(G);
     }
@@ -82,6 +87,11 @@ public class WordNet {
         return idsByNoun.get(noun);
     }
 
+    private void validateDAG(Digraph G) {
+        DirectedCycle test = new DirectedCycle(G);
+        if (test.hasCycle()) throw new IllegalArgumentException();
+    }
+
     // do unit testing of this class
     public static void main(String[] args) {
         if (args.length != 2) {
@@ -93,9 +103,5 @@ public class WordNet {
 
         WordNet wordnet = new WordNet(synsets, hypernyms);
         wordnet.sap("worm", "bird");
-        // StdOut.println(wordnet.distance("white_marlin", "mileage"));
-        // StdOut.println(wordnet.distance("Black_Plague", "black_marlin"));
-        // StdOut.println(wordnet.distance("American_water_spaniel", "histology"));
-        // StdOut.println(wordnet.distance("Brown_Swiss", "barrel_roll"));
     }
 }

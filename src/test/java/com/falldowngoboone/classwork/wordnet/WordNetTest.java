@@ -3,23 +3,29 @@ package com.falldowngoboone.classwork.wordnet;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.*;
 import static org.junit.Assert.*;
-import edu.princeton.cs.algs4.*;
-import java.util.*;
-import java.util.stream.Collectors;
+import org.junit.rules.*;
 
 public class WordNetTest {
     private WordNet wordnet;
-    private String synsetsFile = System.getProperty("user.dir") + "/src/test/wordnet/synsets.txt";
-    private String hypernymsFile = System.getProperty("user.dir") + "/src/test/wordnet/hypernyms.txt";
+    private final String TEST_FILE_DIR = TestHelper.TEST_FILE_DIR.concat("/");
+    // TODO create a build method for WordNet
 
-    @Before
-    public void set_up() {
-        wordnet = new WordNet(synsetsFile, hypernymsFile);
+    @Rule
+    public ExpectedException errors = ExpectedException.none();
+
+    @Test
+    public void check_sap_correctness() {
+        wordnet = buildWordNet("synsets.txt", "hypernyms.txt");
+        assertThat(wordnet.sap("worm", "bird"), is(equalTo("animal animate_being beast brute creature fauna")));
     }
 
     @Test
-    public void checkCorrectnessOfSap() {
-        // 20743 is the int val for "animal animate_being beast brute creature fauna"
-        assertThat(wordnet.sap("worm", "bird"), is(equalTo("animal animate_being beast brute creature fauna")));
+    public void throws_error_for_graphs_with_cycle() {
+        errors.expect(IllegalArgumentException.class);
+        wordnet = buildWordNet("synsets3.txt", "hypernyms3InvalidCycle.txt");
+    }
+
+    private WordNet buildWordNet(String synsetsFile, String hypernymsFile) {
+        return new WordNet(TEST_FILE_DIR + synsetsFile, TEST_FILE_DIR + hypernymsFile);
     }
 }
