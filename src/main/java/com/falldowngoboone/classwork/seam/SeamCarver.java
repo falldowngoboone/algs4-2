@@ -62,13 +62,15 @@ public class SeamCarver {
     }
 
     // energy of pixel at column x and row y
-    public double energy(int x, int y) {}
+    public double energy(int x, int y) {
+        return 0.0;
+    }
 
     // sequence of indices for horizontal seam
-    public int[] findHorizontalSeam() {}
+    // public int[] findHorizontalSeam() {}
 
     // sequence of indices for vertical seam
-    public int[] findVerticalSeam() {}
+    // public int[] findVerticalSeam() {}
 
     // remove horizontal seam from current picture
     public void removeHorizontalSeam(int[] seam) {
