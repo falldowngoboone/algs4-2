@@ -6,13 +6,6 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Debug WordNet (Launch)",
-            "request": "launch",
-            "mainClass": "com.falldowngoboone.classwork.wordnet.WordNet",
-            "args": "/Users/ryanboone/Desktop/algs4-2/src/test/wordnet/synsets.txt /Users/ryanboone/Desktop/algs4-2/src/test/wordnet/hypernyms.txt"
-        },
-        {
-            "type": "java",
             "name": "Debug (Attach)",
             "request": "attach",
             "hostName": "localhost",
