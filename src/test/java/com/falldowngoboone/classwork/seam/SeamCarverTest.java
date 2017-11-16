@@ -19,6 +19,12 @@ public class SeamCarverTest {
     @Test
     public void test_energy_correctness() {
         // refer to [picName].printseams.txt for confirmation on [picName].png
-        assertThat(sc1.energy(0,0), is(1000));
+        assertThat(sc1.energy(0,0), is(1000.0));
+        assertThat(sc1.energy(1,1), is(228.52789764052878));
+    }
+
+    @Test
+    public void test_energy_invalid_pixel() {
+        // should throw IllegalArgumentException
     }
 }

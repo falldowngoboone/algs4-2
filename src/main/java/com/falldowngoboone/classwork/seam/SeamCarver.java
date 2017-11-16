@@ -63,7 +63,23 @@ public class SeamCarver {
 
     // energy of pixel at column x and row y
     public double energy(int x, int y) {
-        return 0.0;
+        if (x == 0 || y == 0 || x == width() - 1 || y == height() - 1)
+            return 1000;
+
+        Color up    = picture.get(x, y-1), 
+              down  = picture.get(x, y+1), 
+              left  = picture.get(x-1, y), 
+              right = picture.get(x+1, y);
+
+        return Math.sqrt(squareDelta(up, down) + squareDelta(left, right));
+    }
+
+    private double squareDelta(Color a, Color b) {
+        double deltaR = a.getRed() - b.getRed(), 
+               deltaG = a.getGreen() - b.getGreen(), 
+               deltaB = a.getBlue() - b.getBlue();
+
+        return Math.pow(deltaR, 2) + Math.pow(deltaG, 2) + Math.pow(deltaB, 2);
     }
 
     // sequence of indices for horizontal seam
