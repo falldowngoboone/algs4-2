@@ -4,13 +4,13 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "taskName": "javac-algs4",
+            "label": "javac-algs4",
             "type": "shell",
             "command": "javac-algs4 ${file}",
             "group": "build"
         },
         {
-            "taskName": "verify",
+            "label": "verify",
             "type": "shell",
             "command": "mvn -B verify",
             "group": {
@@ -19,9 +19,9 @@
             }
         },
         {
-            "taskName": "test",
+            "label": "test",
             "type": "shell",
-            "command": "mvn -B test",
+            "command": "mvn -Dtest=${fileBasenameNoExtension} test",
             "group": "test"
         }
     ]
