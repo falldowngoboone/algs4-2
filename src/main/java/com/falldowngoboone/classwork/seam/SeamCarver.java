@@ -7,8 +7,6 @@ package com.falldowngoboone.classwork.seam;
 
 import edu.princeton.cs.algs4.Picture;
 import java.awt.Color;
-import edu.princeton.cs.algs4.StdOut;
-import static java.lang.System.arraycopy;
 
 public class SeamCarver {
     private int W;
@@ -17,7 +15,7 @@ public class SeamCarver {
     private boolean isTransposed = false;
 
     private class Pixel {
-        private Color color;
+        private final Color color;
         private double energy;
 
         public Pixel(Color color) {
@@ -44,8 +42,8 @@ public class SeamCarver {
         if (isTransposed)
             transpose();
         Picture picture = new Picture(W, H);
-        for (int x = 0; x < W; x++)
-            for (int y = 0; y < H; y++)
+        for (int y = 0; y < H; y++)
+            for (int x = 0; x < W; x++)
                 picture.set(x, y, pixels[y][x].color);
         return picture;
     }
@@ -166,10 +164,14 @@ public class SeamCarver {
         for (int y = 0; y < H; y++) {
             if (!isValidPixel(seam[y], y))
                 throw new IllegalArgumentException();
-            arraycopy(pixels[y], 0, newPixels[y], 0, seam[y]);
-            arraycopy(pixels[y], seam[y] + 1, newPixels[y], seam[y], W - seam[y]);
+            System.arraycopy(pixels[y], 0, newPixels[y], 0, seam[y]);
+            System.arraycopy(pixels[y], seam[y] + 1, newPixels[y], seam[y], W - seam[y]);
         }
         pixels = newPixels;
+        for (int y = 0; y < H; y++) {
+            energy(seam[y], y);
+            if (isValidPixel(seam[y] + 1, y)) energy(seam[y] + 1, y);
+        }
     }
 
     private boolean isValidPixel(int x, int y) {
