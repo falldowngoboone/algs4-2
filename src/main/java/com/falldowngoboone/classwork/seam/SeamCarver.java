@@ -13,7 +13,7 @@ import static java.lang.System.arraycopy;
 public class SeamCarver {
     private int W;
     private int H;
-    Pixel[][] pixels;
+    private Pixel[][] pixels;
     private boolean isTransposed = false;
 
     private class Pixel {
