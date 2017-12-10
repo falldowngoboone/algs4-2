@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import com.falldowngoboone.classwork.TestFolder;
 import edu.princeton.cs.algs4.Picture;
+import edu.princeton.cs.algs4.StdOut;
 
 public class SeamCarverTest {
     SeamCarver sc3x4;
@@ -49,25 +50,32 @@ public class SeamCarverTest {
         sc3x4.removeHorizontalSeam(new int[] { 1, 1, 1 });
         sc3x4.picture();
     }
+    
+    @Test
+    public void picture_AfterRemoveVerticalSeam_ShouldNotThrowError() {
+        sc3x4.removeVerticalSeam(new int[] {1,1,1,1});
+        sc3x4.picture();
+    }
 
     @Test
     public void removeHorizontalSeam_ValidSeam_PictureIsOnePixelShorter() {
-        // sc3x4.removeHorizontalSeam(new int[] {1,1,1});
-        // Picture pic = sc3x4.picture();
-        // assertEquals(3, sc3x4.height());
-        // assertEquals(3, pic.height());
+        sc3x4.removeHorizontalSeam(new int[] {1,1,1});
+        Picture pic = sc3x4.picture();
+        assertEquals(3, sc3x4.height());
+        assertEquals(3, pic.height());
     }
 
     @Test
     public void removeVerticalSeam_ValidSeam_PictureIsOnePixelNarrower() {
-        // sc3x4.removeVerticalSeam(new int[] {1,1,1,1});
-        // Picture pic = sc3x4.picture();
-        // assertEquals(2, sc3x4.width());
-        // assertEquals(2, pic.width());
+        sc3x4.removeVerticalSeam(new int[] {1,1,1,1});
+        Picture pic = sc3x4.picture();
+        assertEquals(2, sc3x4.width());
+        assertEquals(2, pic.width());
     }
+    
 
     @Test
-    public void removeHorizontalSeam_ValidSeame_DoesNotThrowException() {
+    public void removeHorizontalSeam_ValidSeam_DoesNotThrowException() {
         int[] valid = new int[] { 1, 1, 1 };
         sc3x4.removeHorizontalSeam(valid);
     }
@@ -108,6 +116,7 @@ public class SeamCarverTest {
 
     @Test
     public void findHorizontalSeam_sc3x4_Returns121() {
+        StdOut.println("findHorizontalSeam_sc3x4: ");
         assertArrayEquals(new int[] { 1, 2, 1 }, sc3x4.findHorizontalSeam());
     }
 

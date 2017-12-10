@@ -1,12 +1,13 @@
 /******************************************************************************
-*  Compilation:  javac SeamCarver.java
-* 
-*  Content aware image resizing
-******************************************************************************/
+ *  Compilation:  javac SeamCarver.java
+ * 
+ *  Content aware image resizing
+ ******************************************************************************/
 package com.falldowngoboone.classwork.seam;
 
 import edu.princeton.cs.algs4.Picture;
 import java.awt.Color;
+import edu.princeton.cs.algs4.StdOut;
 import static java.lang.System.arraycopy;
 
 public class SeamCarver {
@@ -38,10 +39,6 @@ public class SeamCarver {
             }
     }
 
-    private Pixel getPixel(int x, int y) {
-        return isValidPixel(x, y) ? pixels[y][x] : null;
-    }
-
     // current picture
     public Picture picture() {
         if (isTransposed)
@@ -49,7 +46,7 @@ public class SeamCarver {
         Picture picture = new Picture(W, H);
         for (int x = 0; x < W; x++)
             for (int y = 0; y < H; y++)
-                picture.set(x, y, getPixel(x, y).color);
+                picture.set(x, y, pixels[y][x].color);
         return picture;
     }
 
@@ -71,11 +68,11 @@ public class SeamCarver {
         if (!isValidPixel(x, y))
             throw new IllegalArgumentException();
 
-        if (x == 0 || y == 0 || x == width() - 1 || y == height() - 1)
+        if (x == 0 || y == 0 || x == W - 1 || y == H - 1)
             return 1000;
 
-        Color up = getPixel(x, y - 1).color, down = getPixel(x, y + 1).color, left = getPixel(x - 1, y).color,
-                right = getPixel(x + 1, y).color;
+        Color up = pixels[y - 1][x].color, down = pixels[y + 1][x].color, left = pixels[y][x - 1].color,
+                right = pixels[y][x + 1].color;
 
         return Math.sqrt(squareDelta(up, down) + squareDelta(left, right));
     }
@@ -127,12 +124,10 @@ public class SeamCarver {
             }
         for (int y = 0; y < H - 1; y++)
             for (int x = 0; x < W; x++) {
-                Pixel p1 = getPixel(x, y);
                 int y2 = y + 1;
                 for (int x2 = x - 1; x2 <= x + 1; x2++) {
-                    Pixel p2 = getPixel(x2, y2);
-                    if (p2 == null)
-                        continue;
+                    if (!isValidPixel(x2, y2)) continue;
+                    Pixel p2 = pixels[y2][x2];
                     if (distTo[y][x] + p2.energy < distTo[y2][x2]) {
                         distTo[y2][x2] = distTo[y][x] + p2.energy;
                         pixelTo[y2][x2] = x;
@@ -153,27 +148,32 @@ public class SeamCarver {
 
     // remove horizontal seam from current picture
     public void removeHorizontalSeam(int[] seam) {
-        if (1 == H)
-            throw new IllegalArgumentException("Cannot remove seam; width is 1px.");
-        // transpose the picture and apply removeVerticalSeam()
-        // so there needs to be a boolean for storing picture state
-        // as well as a transpose method that transposes the picture based on that boolean
+        if (!isTransposed) transpose();
+        removeSeam(seam);
     }
 
     // remove vertical seam from current picture
     public void removeVerticalSeam(int[] seam) {
+        if (isTransposed) transpose();
+        removeSeam(seam);
+    }
+    
+    private void removeSeam(int[] seam) {
         if (1 == W)
             throw new IllegalArgumentException("Cannot remove seam; width is 1px.");
         validateSeamAndMaybeThrowError(seam, H);
-        for (int i = 0; i < H; i++) {
-            if (!isValidPixel(seam[i], i))
+        Pixel[][] newPixels = new Pixel[H][W--];
+        for (int y = 0; y < H; y++) {
+            if (!isValidPixel(seam[y], y))
                 throw new IllegalArgumentException();
-            // remove pixel and shift via arraycopy
+            arraycopy(pixels[y], 0, newPixels[y], 0, seam[y]);
+            arraycopy(pixels[y], seam[y] + 1, newPixels[y], seam[y], W - seam[y]);
         }
+        pixels = newPixels;
     }
 
     private boolean isValidPixel(int x, int y) {
-        return x >= 0 && y >= 0 && x < width() && y < height();
+        return x >= 0 && y >= 0 && x < W && y < H;
     }
 
     private void validateSeamAndMaybeThrowError(int[] seam, int expectedLength) {
@@ -194,13 +194,14 @@ public class SeamCarver {
         Pixel[][] newPixels = new Pixel[W][H];
         if (!isTransposed) {
             for (int y = 0; y < H; y++)
-                for (int x = 0; x < W; x++)
-                    newPixels[W - 1 - x][y] = getPixel(x, y);
+                for (int x = 0; x < W; x++){
+                    newPixels[x][y] = pixels[y][x];
+                }
         } else {
-            // TODO: fix me!!!
             for (int x = 0; x < W; x++)
-                for (int y = 0; y < H; y++)
-                    newPixels[x][H - 1 - y] = getPixel(x, y); // pixels[yH][xW]
+                for (int y = 0; y < H; y++){
+                    newPixels[x][H - 1 - y] = pixels[y][x]; // pixels[yH][xW]
+                }
         }
         pixels = newPixels;
         int T = W;
