@@ -37,6 +37,7 @@ public class SeamCarver {
             }
     }
 
+    // TODO: fix; something wrong either here or in transpose...picture is flipped
     // current picture
     public Picture picture() {
         if (isTransposed)
@@ -179,6 +180,7 @@ public class SeamCarver {
         return x >= 0 && y >= 0 && x < W && y < H;
     }
 
+    // TODO: fix and validate correctness
     private void validateSeamAndMaybeThrowError(int[] seam, int expectedLength) {
         if (null == seam)
             throw new IllegalArgumentException("Method must be supplied a valid int[] seam instance.");
