@@ -160,17 +160,18 @@ public class SeamCarver {
         if (1 == W)
             throw new IllegalArgumentException("Cannot remove seam; width is 1px.");
         validateSeamAndMaybeThrowError(seam, H);
-        Pixel[][] newPixels = new Pixel[H][W--];
+        Pixel[][] newPixels = new Pixel[H][W - 1];
         for (int y = 0; y < H; y++) {
-            if (!isValidPixel(seam[y], y))
-                throw new IllegalArgumentException();
+            if (!isValidPixel(seam[y], y)) throw new IllegalArgumentException();
             System.arraycopy(pixels[y], 0, newPixels[y], 0, seam[y]);
-            System.arraycopy(pixels[y], seam[y] + 1, newPixels[y], seam[y], W - seam[y]);
+            if (seam[y] + 1 != W)
+                System.arraycopy(pixels[y], seam[y] + 1, newPixels[y], seam[y], W - 1 - seam[y]);
         }
+        W--;
         pixels = newPixels;
         for (int y = 0; y < H; y++) {
-            energy(seam[y], y);
-            if (isValidPixel(seam[y] + 1, y)) energy(seam[y] + 1, y);
+            if (isValidPixel(seam[y] - 1, y)) energy(seam[y] - 1, y);
+            if (isValidPixel(seam[y], y)) energy(seam[y], y);
         }
     }
 
