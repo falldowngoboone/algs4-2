@@ -125,7 +125,8 @@ public class SeamCarver {
             for (int x = 0; x < W; x++) {
                 int y2 = y + 1;
                 for (int x2 = x - 1; x2 <= x + 1; x2++) {
-                    if (!isValidPixel(x2, y2)) continue;
+                    if (!isValidPixel(x2, y2))
+                        continue;
                     Pixel p2 = pixels[y2][x2];
                     if (distTo[y][x] + p2.energy < distTo[y2][x2]) {
                         distTo[y2][x2] = distTo[y][x] + p2.energy;
@@ -147,23 +148,26 @@ public class SeamCarver {
 
     // remove horizontal seam from current picture
     public void removeHorizontalSeam(int[] seam) {
-        if (!isTransposed) transpose();
+        if (!isTransposed)
+            transpose();
         removeSeam(seam);
     }
 
     // remove vertical seam from current picture
     public void removeVerticalSeam(int[] seam) {
-        if (isTransposed) transpose();
+        if (isTransposed)
+            transpose();
         removeSeam(seam);
     }
-    
+
     private void removeSeam(int[] seam) {
         if (1 == W)
             throw new IllegalArgumentException("Cannot remove seam; width is 1px.");
         validateSeamAndMaybeThrowError(seam, H);
         Pixel[][] newPixels = new Pixel[H][W - 1];
         for (int y = 0; y < H; y++) {
-            if (!isValidPixel(seam[y], y)) throw new IllegalArgumentException();
+            if (!isValidPixel(seam[y], y))
+                throw new IllegalArgumentException();
             System.arraycopy(pixels[y], 0, newPixels[y], 0, seam[y]);
             if (seam[y] + 1 != W)
                 System.arraycopy(pixels[y], seam[y] + 1, newPixels[y], seam[y], W - 1 - seam[y]);
@@ -171,8 +175,10 @@ public class SeamCarver {
         W--;
         pixels = newPixels;
         for (int y = 0; y < H; y++) {
-            if (isValidPixel(seam[y] - 1, y)) energy(seam[y] - 1, y);
-            if (isValidPixel(seam[y], y)) energy(seam[y], y);
+            if (isValidPixel(seam[y] - 1, y))
+                energy(seam[y] - 1, y);
+            if (isValidPixel(seam[y], y))
+                energy(seam[y], y);
         }
     }
 
@@ -195,16 +201,19 @@ public class SeamCarver {
         }
     }
 
+    // TODO: fix this stuff...image is flipped when transposed twice
+    // possibly figure out how to transpose an image and then show it
+    // maybe expose it on main...
     private void transpose() {
         Pixel[][] newPixels = new Pixel[W][H];
         if (!isTransposed) {
             for (int y = 0; y < H; y++)
-                for (int x = 0; x < W; x++){
+                for (int x = 0; x < W; x++) {
                     newPixels[x][y] = pixels[y][x];
                 }
         } else {
             for (int x = 0; x < W; x++)
-                for (int y = 0; y < H; y++){
+                for (int y = 0; y < H; y++) {
                     newPixels[x][H - 1 - y] = pixels[y][x]; // pixels[yH][xW]
                 }
         }
