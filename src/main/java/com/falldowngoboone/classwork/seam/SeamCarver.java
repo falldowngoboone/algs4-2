@@ -223,12 +223,4 @@ public class SeamCarver {
         H = T;
         isTransposed = !isTransposed;
     }
-
-    public void main(String[] args) {
-        // SeamCarver chameleon.png
-        Picture pic = new Picture(args[0]);
-        pic.show();
-        // transpose, then show
-        // repeat
-    }
 }
