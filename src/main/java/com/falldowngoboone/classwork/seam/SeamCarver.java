@@ -214,7 +214,7 @@ public class SeamCarver {
         } else {
             for (int x = 0; x < W; x++)
                 for (int y = 0; y < H; y++) {
-                    newPixels[x][H - 1 - y] = pixels[y][x]; // pixels[yH][xW]
+                    newPixels[x][y] = pixels[y][x]; // pixels[yH][xW]
                 }
         }
         pixels = newPixels;
@@ -222,5 +222,13 @@ public class SeamCarver {
         W = H;
         H = T;
         isTransposed = !isTransposed;
+    }
+
+    public void main(String[] args) {
+        // SeamCarver chameleon.png
+        Picture pic = new Picture(args[0]);
+        pic.show();
+        // transpose, then show
+        // repeat
     }
 }
