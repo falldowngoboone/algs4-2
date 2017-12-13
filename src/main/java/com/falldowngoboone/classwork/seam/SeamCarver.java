@@ -6,6 +6,7 @@
 package com.falldowngoboone.classwork.seam;
 
 import edu.princeton.cs.algs4.Picture;
+import edu.princeton.cs.algs4.StdOut;
 import java.awt.Color;
 
 public class SeamCarver {
@@ -161,6 +162,7 @@ public class SeamCarver {
     }
 
     private void removeSeam(int[] seam) {
+        StdOut.println("removeSeam called");
         if (1 == W)
             throw new IllegalArgumentException("Cannot remove seam; width is 1px.");
         validateSeamAndMaybeThrowError(seam, H);
@@ -201,9 +203,6 @@ public class SeamCarver {
         }
     }
 
-    // TODO: fix this stuff...image is flipped when transposed twice
-    // possibly figure out how to transpose an image and then show it
-    // maybe expose it on main...
     private void transpose() {
         Pixel[][] newPixels = new Pixel[W][H];
         if (!isTransposed) {

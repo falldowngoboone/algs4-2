@@ -14,11 +14,13 @@ public class SeamCarverTest {
     SeamCarver sc1x1;
     SeamCarver sc4x6;
     SeamCarver sc7x10;
+    SeamCarver sc10x12;
     TestFolder testFolder = new TestFolder("seam");
     Picture testPic3x4 = new Picture(testFolder.getFilePath("3x4.png"));
     Picture testPic1x1 = new Picture(testFolder.getFilePath("1x1.png"));
     Picture testPic4x6 = new Picture(testFolder.getFilePath("4x6.png"));
     Picture testPic7x10 = new Picture(testFolder.getFilePath("7x10.png"));
+    Picture testPic10x12 = new Picture(testFolder.getFilePath("10x12.png"));
 
     @BeforeEach
     public void set_up() {
@@ -26,6 +28,7 @@ public class SeamCarverTest {
         sc1x1 = new SeamCarver(testPic1x1);
         sc4x6 = new SeamCarver(testPic4x6);
         sc7x10 = new SeamCarver(testPic7x10);
+        sc10x12 = new SeamCarver(testPic10x12);
     }
 
     @Test
@@ -50,16 +53,16 @@ public class SeamCarverTest {
         sc3x4.removeHorizontalSeam(new int[] { 1, 1, 1 });
         sc3x4.picture();
     }
-    
+
     @Test
     public void picture_AfterRemoveVerticalSeam_ShouldNotThrowError() {
-        sc3x4.removeVerticalSeam(new int[] {1,1,1,1});
+        sc3x4.removeVerticalSeam(new int[] { 1, 1, 1, 1 });
         sc3x4.picture();
     }
 
     @Test
     public void removeHorizontalSeam_ValidSeam_PictureIsOnePixelShorter() {
-        sc3x4.removeHorizontalSeam(new int[] {1,1,1});
+        sc3x4.removeHorizontalSeam(new int[] { 1, 1, 1 });
         Picture pic = sc3x4.picture();
         assertEquals(3, sc3x4.height());
         assertEquals(3, pic.height());
@@ -67,12 +70,11 @@ public class SeamCarverTest {
 
     @Test
     public void removeVerticalSeam_ValidSeam_PictureIsOnePixelNarrower() {
-        sc3x4.removeVerticalSeam(new int[] {1,1,1,1});
+        sc3x4.removeVerticalSeam(new int[] { 1, 1, 1, 1 });
         Picture pic = sc3x4.picture();
         assertEquals(2, sc3x4.width());
         assertEquals(2, pic.width());
     }
-    
 
     @Test
     public void removeHorizontalSeam_ValidSeam_DoesNotThrowException() {
@@ -116,7 +118,6 @@ public class SeamCarverTest {
 
     @Test
     public void findHorizontalSeam_sc3x4_Returns121() {
-        StdOut.println("findHorizontalSeam_sc3x4: ");
         assertArrayEquals(new int[] { 1, 2, 1 }, sc3x4.findHorizontalSeam());
     }
 
@@ -138,5 +139,13 @@ public class SeamCarverTest {
     @Test
     public void findVerticalSeam_sc7x10_Returns2343433221() {
         assertArrayEquals(new int[] { 2, 3, 4, 3, 4, 3, 3, 2, 2, 1 }, sc7x10.findVerticalSeam());
+    }
+
+    @Test
+    public void removeHorizontalSeam_WithOptimalSeam_RemovesSeam() {
+        int[] expected = new int[] { 8, 9, 10, 10, 10, 9, 10, 10, 9, 8 };
+        int[] optimalSeam = sc10x12.findHorizontalSeam();
+        assertArrayEquals(expected, optimalSeam);
+        sc10x12.removeHorizontalSeam(optimalSeam);
     }
 }
