@@ -38,7 +38,6 @@ public class SeamCarver {
             }
     }
 
-    // TODO: fix; something wrong either here or in transpose...picture is flipped
     // current picture
     public Picture picture() {
         if (isTransposed)
@@ -62,9 +61,6 @@ public class SeamCarver {
 
     // energy of pixel at column x and row y
     public double energy(int x, int y) {
-        if (isTransposed) {
-            transpose();
-        }
         if (!isValidPixel(x, y))
             throw new IllegalArgumentException();
 
@@ -161,13 +157,15 @@ public class SeamCarver {
         removeSeam(seam);
     }
 
+    // TODO: add new logic if transposed...transposition isn't quite what I expected...
     private void removeSeam(int[] seam) {
-        StdOut.println("removeSeam called");
         if (1 == W)
             throw new IllegalArgumentException("Cannot remove seam; width is 1px.");
         validateSeamAndMaybeThrowError(seam, H);
-        Pixel[][] newPixels = new Pixel[H][W - 1];
-        for (int y = 0; y < H; y++) {
+        Pixel[][] newPixels = new Pixel[H][W - 1]; // 12 x 10
+        
+        // TODO: this is the logic that needs to change, I believe...
+        for (int y = 0; y < H; y++) { // H is 10
             if (!isValidPixel(seam[y], y))
                 throw new IllegalArgumentException();
             System.arraycopy(pixels[y], 0, newPixels[y], 0, seam[y]);
@@ -188,7 +186,6 @@ public class SeamCarver {
         return x >= 0 && y >= 0 && x < W && y < H;
     }
 
-    // TODO: fix and validate correctness
     private void validateSeamAndMaybeThrowError(int[] seam, int expectedLength) {
         if (null == seam)
             throw new IllegalArgumentException("Method must be supplied a valid int[] seam instance.");
