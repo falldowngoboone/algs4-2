@@ -157,14 +157,12 @@ public class SeamCarver {
         removeSeam(seam);
     }
 
-    // TODO: add new logic if transposed...transposition isn't quite what I expected...
     private void removeSeam(int[] seam) {
         if (1 == W)
             throw new IllegalArgumentException("Cannot remove seam; width is 1px.");
         validateSeamAndMaybeThrowError(seam, H);
         Pixel[][] newPixels = new Pixel[H][W - 1]; // 12 x 10
-        
-        // TODO: this is the logic that needs to change, I believe...
+
         for (int y = 0; y < H; y++) { // H is 10
             if (!isValidPixel(seam[y], y))
                 throw new IllegalArgumentException();
@@ -189,9 +187,10 @@ public class SeamCarver {
     private void validateSeamAndMaybeThrowError(int[] seam, int expectedLength) {
         if (null == seam)
             throw new IllegalArgumentException("Method must be supplied a valid int[] seam instance.");
-        if (seam.length != expectedLength)
+        if (seam.length != expectedLength) {
             throw new IllegalArgumentException(
                     "Expected seam length of " + expectedLength + ", recevied: " + seam.length);
+        }
         int prev = -1;
         for (int current : seam) {
             if (prev != -1 && prev - current < -1 || prev - current > 1)
@@ -202,17 +201,10 @@ public class SeamCarver {
 
     private void transpose() {
         Pixel[][] newPixels = new Pixel[W][H];
-        if (!isTransposed) {
-            for (int y = 0; y < H; y++)
-                for (int x = 0; x < W; x++) {
-                    newPixels[x][y] = pixels[y][x];
-                }
-        } else {
-            for (int x = 0; x < W; x++)
-                for (int y = 0; y < H; y++) {
-                    newPixels[x][y] = pixels[y][x]; // pixels[yH][xW]
-                }
-        }
+        for (int y = 0; y < H; y++)
+            for (int x = 0; x < W; x++) {
+                newPixels[x][y] = pixels[y][x];
+            }
         pixels = newPixels;
         int T = W;
         W = H;
